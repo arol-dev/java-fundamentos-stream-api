@@ -2,6 +2,7 @@ package dev.arol.javafundamentos.stream;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -84,7 +85,14 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // Hint: Take only the first maxSize elements
         // Hint: You can use an IntStream.range(…)
         // Handle edge cases like maxSize <= 0 or maxSize > elements.size()
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(maxSize<=0 || maxSize > elements.size()){
+            return new CustomStreamImpl<>(elements);
+        }
+
+        List<T> listaLimitada = IntStream.range(0, (int) maxSize).mapToObj(elements::get)
+                .collect(Collectors.toList());
+        return new CustomStreamImpl<>(listaLimitada);
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
     
     @Override
@@ -92,7 +100,12 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement anyMatch method
         // Hint: Return true if any element satisfies the predicate
         // Short-circuit evaluation: return true as soon as you find a match
-        throw new UnsupportedOperationException("Not yet implemented");
+        for(T element : elements){
+            if (predicate.test(element)){
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
@@ -100,7 +113,13 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement allMatch method
         // Hint: Return true if all elements satisfy the predicate
         // Short-circuit evaluation: return false as soon as you find a non-match
-        throw new UnsupportedOperationException("Not yet implemented");
+        for(T element : elements){
+            if (!predicate.test(element)){
+                return false;
+            }
+        }
+        return true;
+
     }
     
     @Override
