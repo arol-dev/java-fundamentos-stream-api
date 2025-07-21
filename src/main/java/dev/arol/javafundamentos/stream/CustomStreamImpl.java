@@ -147,7 +147,16 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // If one element, return Optional.of(element)
         // If multiple elements, apply accumulator function sequentially
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(elements.isEmpty()){
+            return Optional.empty();
+        }else{
+            Iterator<T> identity = elements.iterator();
+            T siguiente = identity.next();
+            while(identity.hasNext()){
+                siguiente = accumulator.apply(siguiente,identity.next());
+            }
+            return Optional.of(siguiente);
+        }
     }
 
     @Override
@@ -155,6 +164,12 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement reduce method with identity
         // Hint: Start with identity value and apply accumulator to each element
         // This always returns a value (never empty)
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        for (T element : elements) {
+            identity = accumulator.apply(identity, element);
+        }
+        return identity;
+
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }
