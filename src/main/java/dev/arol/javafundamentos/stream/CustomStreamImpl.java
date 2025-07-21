@@ -25,15 +25,17 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
     public List<T> toList() {
         // TODO: Implement toList method
         // Hint: Return a new List containing all elements
+        return elements;
         // This is a terminal operation
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public long count() {
         // TODO: Implement count method
         // Hint: Return the number of elements in the stream
-        throw new UnsupportedOperationException("Not yet implemented");
+        return elements.size();
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
@@ -41,15 +43,23 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement forEach method
         // Hint: Apply the action to each element
         // This is a terminal operation
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (T element : elements){
+            action.accept(element);
+        }
     }
 
     @Override
     public <R> CustomStream<R> map(Function<T, R> mapper) {
-        // TODO: Implement map method
-        // Hint: Apply the mapper function to each element
-        // Return a new CustomStreamImpl with the mapped elements
-        throw new UnsupportedOperationException("Not yet implemented");
+        // Recibes una funcion que cambia los elementos de T a R
+        // Por lo tanto a cada elemento de esa coleccion has de aplicarle la funcion
+        // Y devolver la trasformacion en un nuevo CustomStreamImpl
+        List<R> elementosMap = new ArrayList<>();
+        for(T element : elements){
+            R map = mapper.apply(element);
+            elementosMap.add(map);
+        }
+
+        return new CustomStreamImpl<>(elementosMap);
     }
 
     @Override
@@ -57,7 +67,15 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement filter method
         // Hint: Create a new list with elements that satisfy the predicate
         // Return a new CustomStreamImpl with the filtered elements
-        throw new UnsupportedOperationException("Not yet implemented");
+        // Recibimos un elemento y devolvemos un bool
+        List<T> nuevaLista = new ArrayList<>();
+        for(T element : elements){
+            if( predicate.test(element)){
+                nuevaLista.add(element);
+            }
+        }
+        return new CustomStreamImpl<>(nuevaLista);
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
