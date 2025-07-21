@@ -128,7 +128,16 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // Hint: Return true if no elements satisfy the predicate
         // Hint: re-use another method from the same instance
         // Short-circuit evaluation: return false as soon as you find a match
-        throw new UnsupportedOperationException("Not yet implemented");
+        int contNoSatisf = 0;
+        for(T element : elements){
+            if (!predicate.test(element)){
+                contNoSatisf++;
+            }
+        }
+        if (elements.size() == contNoSatisf){
+            return true;
+        }
+        return false;
     }
 
     @Override
