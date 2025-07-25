@@ -2,6 +2,7 @@ package dev.arol.javafundamentos.stream;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -26,14 +27,14 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement toList method
         // Hint: Return a new List containing all elements
         // This is a terminal operation
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new ArrayList<>(elements);
     }
 
     @Override
     public long count() {
         // TODO: Implement count method
         // Hint: Return the number of elements in the stream
-        throw new UnsupportedOperationException("Not yet implemented");
+        return elements.toArray().length;
     }
 
     @Override
@@ -41,23 +42,21 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement forEach method
         // Hint: Apply the action to each element
         // This is a terminal operation
-        throw new UnsupportedOperationException("Not yet implemented");
+        elements.forEach(action);
     }
 
     @Override
     public <R> CustomStream<R> map(Function<T, R> mapper) {
         // TODO: Implement map method
         // Hint: Apply the mapper function to each element
-        // Return a new CustomStreamImpl with the mapped elements
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new CustomStreamImpl<>(elements.stream().map(mapper).toList());
     }
 
     @Override
     public CustomStream<T> filter(Predicate<T> predicate) {
         // TODO: Implement filter method
         // Hint: Create a new list with elements that satisfy the predicate
-        // Return a new CustomStreamImpl with the filtered elements
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new CustomStreamImpl<>(elements.stream().filter(predicate).toList());
     }
 
     @Override
@@ -66,7 +65,13 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // Hint: Take only the first maxSize elements
         // Hint: You can use an IntStream.range(…)
         // Handle edge cases like maxSize <= 0 or maxSize > elements.size()
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (maxSize <= 0) return new CustomStreamImpl<>(new ArrayList<>());
+        int size = elements.size();
+        int limit = (int) Math.min(maxSize, size);
+        List<T> limitedList = IntStream.range(0, limit)
+                .mapToObj(elements::get)
+                .collect(Collectors.toList());
+        return new CustomStreamImpl<>(limitedList);
     }
     
     @Override
@@ -74,7 +79,10 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement anyMatch method
         // Hint: Return true if any element satisfies the predicate
         // Short-circuit evaluation: return true as soon as you find a match
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (T element: elements) {
+            if (predicate.test(element)) return true;
+        }
+        return false;
     }
     
     @Override
@@ -82,7 +90,10 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement allMatch method
         // Hint: Return true if all elements satisfy the predicate
         // Short-circuit evaluation: return false as soon as you find a non-match
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (T element: elements) {
+            if (!predicate.test(element)) return false;
+        }
+        return true;
     }
     
     @Override
@@ -91,7 +102,10 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // Hint: Return true if no elements satisfy the predicate
         // Hint: re-use another method from the same instance
         // Short-circuit evaluation: return false as soon as you find a match
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (T element: elements) {
+            if (predicate.test(element)) return false;
+        }
+        return true;
     }
 
     @Override
@@ -100,8 +114,16 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // Hint: If empty, return Optional.empty()
         // If one element, return Optional.of(element)
         // If multiple elements, apply accumulator function sequentially
+        if (elements.isEmpty()) return Optional.empty();
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        Iterator<T> iterator = elements.iterator();
+        T result = iterator.next();
+
+        while (iterator.hasNext()) {
+            result = accumulator.apply(result, iterator.next());
+        }
+
+        return Optional.of(result);
     }
 
     @Override
@@ -109,6 +131,10 @@ public class CustomStreamImpl<T> implements CustomStream<T> {
         // TODO: Implement reduce method with identity
         // Hint: Start with identity value and apply accumulator to each element
         // This always returns a value (never empty)
-        throw new UnsupportedOperationException("Not yet implemented");
+        T result = identity;
+        for (T element : elements) {
+            result = accumulator.apply(result, element);
+        }
+        return result;
     }
 }

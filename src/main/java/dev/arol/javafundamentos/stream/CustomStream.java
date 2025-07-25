@@ -9,7 +9,6 @@ import java.util.function.*;
  * Students should implement this interface to understand functional programming concepts.
  */
 public interface CustomStream<T> {
-    
     /**
      * Creates a CustomStream from a List of elements.
      * This is equivalent to Collection.stream()
