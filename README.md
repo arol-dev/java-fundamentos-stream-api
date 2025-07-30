@@ -1,7 +1,9 @@
 # Ejercicio de Implementación de la API Stream de Java
 
 ## Descripción General
-Este ejercicio ayuda a los estudiantes de fundamentos de Java a entender los conceptos de programación funcional reimplementando la funcionalidad principal de la API Stream. Los estudiantes trabajarán con expresiones lambda, referencias a métodos e interfaces funcionales siguiendo principios de desarrollo guiado por tests.
+Este ejercicio ayuda a los estudiantes de fundamentos de Java a entender los conceptos de programación funcional
+reimplementando la funcionalidad principal de la API Stream. Los estudiantes trabajarán con expresiones lambda,
+referencias a métodos e interfaces funcionales siguiendo principios de desarrollo guiado por tests.
 
 ## Objetivos de Aprendizaje
 - Comprender los conceptos de programación funcional en Java
